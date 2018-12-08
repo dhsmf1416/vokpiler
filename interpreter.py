@@ -69,13 +69,14 @@ def inter_assign(arith_node, line):
         rhs = eval_ast(arith_node.next)
     else:
         rhs = arith_node.next
+        rhs = symbol_table.find(rhs).current_value
+        x = symbol_table.delete_one(arith_node.next)
     global p_var, p_int, p_float, p_array
     # Case #1: variable
     if check_match(p_var, lhs):
         entry = symbol_table.find(lhs)
-        if (arith_node.next.expr == "#"):
-            rhs = symbol_table.find(rhs).current_value
-            x = symbol_table.delete_one(arith_node.next)
+        if not entry:
+            return Error("", "Run-time error : line")
 
         if (entry.type == "int" and type(rhs) == int) or (entry.type == "float" and type(rhs) == float):
             entry.current_value = rhs
@@ -99,6 +100,8 @@ def inter_assign(arith_node, line):
                 # return Error("", "Error: in class SymbolTable, def modify : no such symbol")
             array_index = index_entry.current_value
         entry = symbol_table.find(array_name)
+        if not entry:
+            return Error("", "Run-time error : line")
         if (entry.type == "int*" and type(rhs) == int) or (entry.tpe == "float*" and type(rhs) == float):
             if index_entry.current_value in range(entry.length):
                 entry.current_value[index_entry.current_value] = rhs
@@ -277,17 +280,17 @@ def eval_cond(lhs, op, rhs):
 
 def interpreter(node):
     if node.type == "int":
-        inter_int(node)
+        return inter_int(node)
     elif node.type == "float":
-        inter_float(node)
+        return inter_float(node)
     elif node.type == "int*":
-        inter_int_star(node)
+        return inter_int_star(node)
     elif node.type == "float*":
-        inter_float_star(node)
+        return inter_float_star(node)
     elif node.type == "print":
         return inter_print(node.token[1])
     elif node.type == '=':
-        inter_assign(node.tree, node.line)
+        return inter_assign(node.tree, node.line)
     elif node.type in [">", "<", ">=", "<=", "==", "!="]:
         return inter_cond(node.tree)
     elif node.type == "return":

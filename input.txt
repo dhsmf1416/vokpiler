@@ -6,6 +6,6 @@ int sum(int num) {
 }
 int main(void) {
  int a;
-result = sum(10);
-printf("%d\n", result);
+a = sum(10);
+printf("%d\n", a);
 }
