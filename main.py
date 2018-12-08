@@ -177,7 +177,7 @@ def parse_file(path):
         return Error("syntax", "Syntax error : line %d" % (current_line))
         # make_error("no match bracket")
         # return
-    #print("SUCCESSFULLY FINISH!!")
+    # print("SUCCESSFULLY FINISH!!")
     # for function in functionList:
     #     print("-------")
     #     asdf = function.first
@@ -291,6 +291,7 @@ def iterate_function(function):
                 endFlag = True
                 continue
             result = interpret_one_line(cur_line)
+            # print(cur_line)
             if type(result) == Error:
                 print("Run-time error: line %d" % (cur_line.line))
                 # print(result.msg)
@@ -301,6 +302,8 @@ def iterate_function(function):
                 return result
             if result == 'False':
                 cur_line = cur_line.node_false_next
+                if cur_line.line == 0:
+                    cur_line = get_next_line(cur_line)
             else:
                 now_line = cur_line.line
                 cur_line = get_next_line(cur_line)
