@@ -145,6 +145,8 @@ def parse_file(path):
                         new_node = Node("line","")
                         new_node.line = current_line
                         context.link_last(new_node)
+                        if context.name in [function.name for function in functionList]:
+                            return Error("syntax","Syntax error :line")
                         functionList.append(context)
                     elif type(context) == ForLoop:
                         currentStack[top-1].link_last(context.first)
