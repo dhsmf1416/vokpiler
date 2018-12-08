@@ -9,14 +9,14 @@ p_float = re.compile("^[-+]?[0-9]+\.[0-9]+$")
 p_var = re.compile("[a-zA-Z_][a-zA-Z_0-9]*")
 p_array = re.compile("[a-zA-Z_][a-zA-Z_0-9]*[[].*[]]")
 p_function = re.compile("[a-zA-Z_][a-zA-Z_0-9]*[(].*[)]")
+definitions = ["int","float","for","if","return","printf"]
 
 
 def inter_int(n):
    arg_len = len(n.token[1])
    for i in range(0, arg_len):
-      if symbol_table.find(n.token[1][i]):
-         print("Error : The symbol was already decleared, Exit program")
-         sys.exit(1)
+      if symbol_table.find(n.token[1][i]) or n.token[1][i] in definitions:
+        return Error("", "Run-time error : line")
       curr_node = SymbolEntry(n.token[1][i], "int", None, None, [[]],scope_stack.getScope())
       symbol_table.add(curr_node)
       curr_node.trace[0].append([None, n.line])
@@ -24,9 +24,8 @@ def inter_int(n):
 def inter_float(n):
    arg_len = len(n.token[1])
    for i in range(0, arg_len):
-      if symbol_table.find(n.token[1][i]):
-         print("Error : The symbol was already decleared, Exit program")
-         sys.exit(1)
+      if symbol_table.find(n.token[1][i]) or n.token[1][i] in definitions:
+        return Error("", "Run-time error : line")
       curr_node = SymbolEntry(n.token[1][i], "float", None, None, [[]],scope_stack.getScope())
       symbol_table.add(curr_node)
       curr_node.trace[0].append([None, n.line])
@@ -34,9 +33,8 @@ def inter_float(n):
 def inter_int_star(n):
    arg_len = len(n.token[1])
    for i in range(0, arg_len):
-      if symbol_table.find(n.token[1][i][0]):
-         print("Error : The symbol was already decleared, Exit program")
-         sys.exit(1)
+      if symbol_table.find(n.token[1][i][0]) or n.token[1][i] in definitions:
+            return Error("", "Run-time error : line")
       array_len = n.token[1][i][1]
       curr_node = SymbolEntry(n.token[1][i][0], "int*", [None] * array_len, array_len, [[] for i in range(array_len)],scope_stack.getScope())
       symbol_table.add(curr_node)
@@ -46,9 +44,8 @@ def inter_int_star(n):
 def inter_float_star(n):
    arg_len = len(n.token[1])
    for i in range(0, arg_len):
-      if symbol_table.find(n.token[1][i][0]):
-         print("Error : The symbol was already decleared, Exit program")
-         sys.exit(1)
+      if symbol_table.find(n.token[1][i][0]) or n.token[1][i] in definitions:
+            return Error("", "Run-time error : line")
       array_len = n.token[1][i][1]
       curr_node = SymbolEntry(n.token[1][i][0], "float*", [None] * array_len, array_len, [[] for i in range(array_len)],scope_stack.getScope())
       symbol_table.add(curr_node)

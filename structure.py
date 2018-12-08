@@ -229,7 +229,6 @@ def parse_cond_arith(s): # return type: ArithNode
     return parent
 def parse_equal(s):
     toks = tokenize(s)
-    print(toks)
     ast = Node(toks[1], toks)
     ast.tree = ArithNode(toks[1])
     _left = parse_statement(toks[0])

@@ -5,7 +5,7 @@ int sum(int num) {
  return num;
 }
 int main(void) {
- int a;
+ int a,printf;
 a = sum(10);
 printf("%d\n", a);
 }
