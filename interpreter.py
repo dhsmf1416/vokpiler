@@ -292,3 +292,5 @@ def interpreter(node):
         return inter_cond(node.tree)
     elif node.type == "return":
         return inter_return(node.tree)
+    else:
+        return "}"

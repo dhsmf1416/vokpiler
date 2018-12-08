@@ -291,7 +291,6 @@ def iterate_function(function):
                 endFlag = True
                 continue
             result = interpret_one_line(cur_line)
-            # print(cur_line)
             if type(result) == Error:
                 print("Run-time error: line %d" % (cur_line.line))
                 # print(result.msg)
@@ -304,6 +303,9 @@ def iterate_function(function):
                 cur_line = cur_line.node_false_next
                 if cur_line.line == 0:
                     cur_line = get_next_line(cur_line)
+            elif result == '}' and not cur_line.node_next:
+                endFlag = True
+                continue
             else:
                 now_line = cur_line.line
                 cur_line = get_next_line(cur_line)
