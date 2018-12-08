@@ -296,13 +296,17 @@ def iterate_function(function):
                 # print(result.msg)
                 return result
             if result == "empty":
-                cur_line += 1
+                global_line_num += 1
             if type(result) in [int,float]:
                 return result
             if result == 'False':
                 cur_line = cur_line.node_false_next
             else:
+                now_line = cur_line.line
                 cur_line = get_next_line(cur_line)
+                if cur_line and now_line == cur_line.line and now_line > 0:
+                    global_line_num += 1
+
             continue
         key_input = input(">> ")
         if key_input.strip(" ") == "next":
